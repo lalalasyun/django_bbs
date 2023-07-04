@@ -1,0 +1,58 @@
+{% load django_bootstrap5 %}
+<div class="modal fade" id="editModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+        <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel">トリミング</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body d-flex justify-content-center">
+            <div class="content">
+                <div class="trim_area">
+                    <div class="trim_mask">
+                        <div class="trim_image">
+                            {% if image %}
+                            <img src="/media/{{image.image}}" alt="image"></img>
+                            {% endif %}
+                        </div>
+                    </div>
+                    <div id="trim_div">
+
+                    </div>
+                </div>
+                <div class="range mt-2">
+                    <input type="range" class="form-range" id="range" value="0">
+                </div>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <form method="post" action="{% url 'trim' %}" id="trim_form">
+                {% csrf_token %}
+                {% bootstrap_form trim_form %}
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">キャンセル</button>
+                <button type="submit" class="btn btn-primary">完了</button>
+            </form>
+        </div>
+    </div>
+</div>
+{% load static %}
+<script src="{% static 'image/script.js' %}"></script>
+<style>
+    .trim_image, #trim_div {
+        width: {{ image_size }}px;
+        height: {{ image_size }}px;
+    }
+    .trim_image img {
+        height: {{ image_size }}px;
+    }
+</style>
+<script>
+    {% if image and not image.is_edited %}
+    const editModal = new bootstrap.Modal(document.getElementById('editModal'), {keyboard: false});
+    editModal.show();
+    
+    setTransFormValue({{ image.position_x }}, {{ image.position_y }});
+    setZoomValue({{ image.zoom }});
+    $('#range').val({{ image.zoom }});
+    {% endif %}
+</script>

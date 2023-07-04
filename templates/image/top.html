@@ -1,0 +1,35 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load django_bootstrap5 %}
+{% block extraheader %}
+<link rel="stylesheet" href="{% static 'image/style.css' %}">
+{% endblock extraheader %}
+{% block main %}
+<div class="d-flex">
+    <div>
+        <div class="p-5 shadow rounded"> 
+            <h2>画像を登録する</h2>
+            <form action="{% url 'upload' %}" method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+                {% bootstrap_form upload_form %}
+                <button type="submit" class="btn btn-primary">アップロード</button>
+            </form>
+        </div>
+
+        {% if image %}
+        <div class="p-5 mt-3 shadow rounded">
+            <h2>画像を編集する</h2>
+            <img src="media/{{image.image}}" alt="image" width="100px"></img>
+            {% include "image/remove_confirm_modal.html" %}
+            <button type="button" class="btn"  data-bs-toggle="modal" data-bs-target="#editModal" title="trim"><i class="fa-solid fa-crop-simple"></i></button>
+            <button type="button" class="btn" data-bs-toggle="modal" data-bs-target="#confirmModal" title="delete"><i class="fa-solid fa-trash-can"></i></button>
+        </div>
+        {% endif %}
+    </div>
+    
+    
+</div>
+{% if image %}
+{% include "image/edit_image_modal.html" %}
+{% endif %}
+{% endblock main %}

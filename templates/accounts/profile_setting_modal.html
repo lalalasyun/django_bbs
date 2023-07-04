@@ -1,0 +1,47 @@
+{% load django_bootstrap5 %}
+<button type="button" class="btn btn-outline-primary btn-sm" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
+プロフィール設定
+</button>
+
+<div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+	<div class="modal-dialog modal-dialog-centered">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h5 class="modal-title" id="staticBackdropLabel">プロフィール設定</h5>
+				<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+			</div>
+			<div class="modal-body">
+				{% if image %}
+				<div>
+					<img src="/media/{{image.image}}" alt="image" width="100px"></img>
+					
+					<button type="button" class="btn"  data-bs-toggle="modal" data-bs-target="#editModal" title="trim"><i class="fa-solid fa-crop-simple"></i></button>
+					<button type="button" class="btn" data-bs-toggle="modal" data-bs-target="#confirmModal" title="delete"><i class="fa-solid fa-trash-can"></i></button>
+				</div>
+				{% endif %}
+				<div> 
+					<label>画像を登録する</label>
+					<form id="upload_form" action="{% url 'upload' %}" method="post" enctype="multipart/form-data">
+						{% csrf_token %}
+						{% bootstrap_form upload_form %}
+					</form>
+				</div>
+			
+			<form  action="{% url 'setting' %}" method="post">
+					{% csrf_token %}
+					{% bootstrap_form setting_form %}
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">キャンセル</button>
+					<button id="setting" type="submit" class="btn btn-primary"  data-bs-dismiss="modal">変更</button>
+				</div>
+			</form>
+		</div>
+	</div>
+</div>
+{% include "image/remove_confirm_modal.html" %}
+{% include "image/edit_image_modal.html" %}
+
+<script>
+	$("#upload_image").on("change", uploadImage);
+</script>

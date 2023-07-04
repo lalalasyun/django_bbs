@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+{% load static %}
+{% load user_agents %}
+{% block extraheader %}
+<title>{{ page_user.nickname }} さん</title>
+<link rel="stylesheet" href="{% static 'accounts/css/style.css' %}">
+<link rel="stylesheet" href="{% static 'image/style.css' %}">
+<script src="{% static 'js/ajax.js' %}"></script>
+<script src="{% static 'accounts/js/script.js' %}"></script>
+<script src="{% static 'bbs/js/script.js' %}"></script>
+
+{% endblock %}
+{% block main %}
+<div id="main" class="main {{ request|is_mobile | yesno:",shadow p-3"}} rounded">
+	<div id="messages"></div>
+	<div id="profile" class="main-content">
+		{% include "accounts/profile_detail.html" %}
+	</div>
+	<h2>投稿一覧</h2>
+	<div id="timeline" class="main-content w-100">
+		{% if posts %}
+		{% include 'bbs/timeline.html' %}
+	{% endif %}
+	</div>
+</div>
+{% endblock %}

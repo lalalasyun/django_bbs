@@ -1,0 +1,48 @@
+<div class="my-3">
+    {% if page_user.image != "" %}
+    <img src="/media/{{page_user.image}}" width="150px" height="150px" alt="image" loading="lazy">
+    {% else %}
+    <div class="image-box"></div>
+    {% endif %}
+</div>
+<h1>{{ page_user.nickname }}</h1>
+<div class="d-flex">
+    <div class="d-flex me-3 pt-2">
+        誕生日:{{ page_user.date_of_birth | default_if_none:"未設定" }}
+    </div>
+    {% if page_user != user %}
+        {% if is_follow %}
+            <div id="unfollow" class="d-flex btn" data-url="{% url 'follow' page_user.username %}">
+                <div><i class="mt-1 fa-solid fa-user-slash"></i></div>
+                <div>フォローを外す</div>
+            </div>
+        {% else %}
+            <div id="follow" class="d-flex btn" data-url="{% url 'follow' page_user.username %}">
+                <div><i class="mt-1 fa-solid fa-user-plus"></i></div>
+                <div>フォローする</div>
+            </div>
+        {% endif %}
+    {% endif %}
+</div>
+<div class="d-flex">
+    <div class="">
+        {% include "accounts/follow_modal.html" with modal_name="follow_modal" %}
+    </div>
+    <div class="ms-2">
+        {% include "accounts/follow_modal.html" with modal_name="follower_modal" %}
+    </div>
+</div>
+<div class="border p-3 mt-2 mb-5 bg-body rounded">
+    <div class="d-flex justify-content-between">
+        <b>プロフィール</b>
+        {% if page_user == user %}
+        {% include "accounts/profile_setting_modal.html" %}
+        {% endif %}
+    </div>
+    
+</div>
+<p>{{ page_user.introduction | default_if_none:"未設定"}}</p>
+<script>
+    $("#follow").on("click", clickFollowBtn);
+    $("#unfollow").on("click", clickUnFollowBtn);
+</script>

@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+{% load django_bootstrap5 %}
+{% block extraheader %}
+<title>ログイン</title>
+{% endblock %}
+{% block main %}
+<h2>ログイン</h2>
+
+<form method="post">
+	{% csrf_token %}
+	<input type="hidden" name="text" value="{{ next}}" />
+	{% bootstrap_form form %}
+	{% bootstrap_button button_type="submit" content="ログイン" %}
+</form>
+{% endblock %}

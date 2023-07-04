@@ -1,0 +1,11 @@
+.trim_image {
+    transform: translate3d(0px, 0px, 0px);
+    overflow: hidden;
+}
+.trim_mask {
+    position: absolute;
+}
+#trim_div {
+    opacity: 0.5;
+    background-color: black;
+}

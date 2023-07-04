@@ -1,0 +1,83 @@
+<data id="post_data" 
+    data-last_post_index="{{ posts|length }}"
+    data-get_next_post="{{ post_next }}"
+    data-get_additional_post_url="{% url 'get_additional_post' %}"
+    data-view_timeline="{{ user.view_timeline }}">
+</data>
+{% for post in posts %}
+<div class="border rounded p-1">
+    <div class="d-flex justify-content-between">
+        <div class="d-flex">
+            <img src="/media/{{ post.posted_by.image }}" class="rounded-circle me-2" width="50" height="50">
+            <div>
+                <a href="{% url 'accounts' post.posted_by.username %}">
+                    <div>{{ post.posted_by.nickname }}@{{ post.posted_by.username }}</div>
+                </a>
+                <div>{{ post.text }}</div>
+            </div>
+        </div>
+        <div>
+            <div class="btn setting-modal-btn">・・・</div>
+            <div class="setting-modal shadow p-1 mb-5 bg-body rounded d-none">
+                {% if post.posted_by == user %}
+                <div class="pointer delete-post-btn m-2 link-secondary" 
+                data-delete_post_no="{{post.pk}}" 
+                data-delete_post_url="{% url 'delete_post_text' %}">ツイートを削除</div>
+                {% else %}
+                    {% if not post.posted_by in follow_names %}
+                    <div class="pointer follow-post-btn m-2 link-secondary"
+                    data-follow_post_url="{% url 'follow' post.posted_by.username %}">フォローする</div>
+                    {% else %}
+                    <div class="pointer unfollow-post-btn m-2 link-secondary"
+                    data-follow_post_url="{% url 'follow' post.posted_by.username %}">フォローを外す</div>
+                    {% endif %}
+                {% endif %}
+            </div> 
+        </div>
+        
+    </div>
+    
+    
+    <div class="d-flex justify-content-end">
+        <div>
+            <i class="fa-regular fa-heart me-3 pointer"></i>
+            <i class="fa-solid fa-retweet me-5 pointer"></i>
+        </div>
+        <div>{{ post.posted_at |date:"n/j H:i"}}</div>
+    </div>
+</div>
+{% endfor %}
+<script>
+    $(document).on("click",function(e){
+        if ($(e.target).hasClass("setting-modal-btn")) return;
+        for (const modal of $(".setting-modal")) {
+            $(modal).addClass("d-none");
+        }
+    });
+    $(".setting-modal-btn").on("click", clickModalBtn);
+    $(".delete-post-btn").on("click", clickDeletePostBtn);
+    $(".unfollow-post-btn").on("click", function(e) {
+        sendPostFollow(e,"unfollow");
+    })
+    $(".follow-post-btn").on("click", function(e) {
+        sendPostFollow(e,"follow");
+    })
+
+    $(function() {
+        const all_dropdown = $("#posts_dropdown #all_timeline .dropdown-item");
+        const follow_dropdown = $("#posts_dropdown #follow_timeline .dropdown-item");
+
+        follow_dropdown.removeClass("disabled");
+        all_dropdown.removeClass("disabled");
+
+        if ($("#post_data").data("view_timeline") === "") {
+            all_dropdown.addClass("disabled");
+        }
+        if ($("#post_data").data("view_timeline") === "all") {
+            all_dropdown.addClass("disabled");
+        } 
+        if ( $("#post_data").data("view_timeline") === "follow") {
+            follow_dropdown.addClass("disabled");
+        }
+    });
+</script>

@@ -1,0 +1,50 @@
+{% extends "base.html" %}
+{% load static %}
+{% load user_agents %}
+{% block extraheader %}
+<title>Django BBS</title>
+<script src="{% static 'js/ajax.js' %}"></script>
+<script src="{% static 'bbs/js/script.js' %}"></script>
+{% endblock %}
+{% block main %}
+{% if not request|is_mobile %}
+<div class="postform mobile">
+{% include 'bbs/postform.html' with btn_id="top_submit" form_id="top_post_form" %}
+</div>
+{% endif %}
+<div class="d-flex">
+	<div class="left-content flex-grow-1  {{ request|is_mobile | yesno:",shadow p-3"}}  rounded">
+		<div class="d-flex justify-content-between">
+			<h1>タイムライン</h1>
+			<div id="posts_dropdown" class="dropdown" data-set_timeline_url="{% url 'setting_timeline' %}">
+				<button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+					表示切り替え
+				</button>
+				<ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+					<li id="all_timeline">
+						<div class="dropdown-item pointer">
+							全て表示
+						</div>
+					</li>
+					<li id="follow_timeline" >
+						<div class="dropdown-item pointer">
+							フォローユーザのみ
+						</div>
+					</li>
+				</ul>
+			</div>
+		</div>
+		<div id="timeline">
+			{% if posts %}
+			{% include 'bbs/timeline.html' %}
+			{% endif %}
+		</div>
+	</div>
+
+	<div class="right-content">
+		<div class="postform pc position-sticky right-50">
+			{% include 'bbs/postform.html' with btn_id="right_submit" form_id="right_post_form" %}
+		</div>
+	</div>
+</div>
+{% endblock %}

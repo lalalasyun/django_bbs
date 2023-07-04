@@ -1,0 +1,10 @@
+{% load django_bootstrap5 %}
+<div id="post_form" class="shadow p-3 mb-5 bg-body rounded">
+    <form id="{{form_id}}" method="POST" action="{% url "post_text" %}">
+        {% csrf_token %}
+        {% bootstrap_form post_form %}
+        <div class="d-flex justify-content-end">
+        <button type="button" class="btn btn-primary" id="{{btn_id}}">投稿</button>
+        </div>
+    </form>
+</div>

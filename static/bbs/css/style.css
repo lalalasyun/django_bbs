@@ -1,0 +1,54 @@
+a {
+	text-decoration: none;
+}
+main {
+	padding : 2rem 0;
+}
+
+html {
+	min-width: 400px;
+}
+
+.setting-modal{
+	position: absolute;
+}
+
+.pointer{
+	cursor: pointer;
+}
+
+.mobile-navber {
+    position: fixed;
+    width: 100%;
+    z-index: 10000;
+}
+
+@media (width > 992px) {
+	.mobile {
+		display: none;
+	}
+	.pc {
+		display: block;
+	}
+	.postform.pc {
+		margin-left: 50px;
+		position:relative;
+	}
+	.main-content {
+		width : 70%;
+	}
+} 
+
+@media (width < 992px) {
+	.mobile {
+		display: block;
+	}
+	.pc {
+		display: none;
+	}
+}
+@media (width < 576px) {
+	.setting-modal{
+		right: 0;
+	}
+}
